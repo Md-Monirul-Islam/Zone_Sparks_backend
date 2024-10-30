@@ -8,4 +8,5 @@ urlpatterns = [
     path('category/update/<int:id>/', views.CategoryUpdateView.as_view(), name='category-update'),
     path('category/delete/<int:id>/', views.CategoryDeleteView.as_view(), name='category-delete'),
     path('category-count/', views.category_count, name='category_count'),
+    path('products/', views.ProductListCreateView.as_view(), name='product-list-create'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

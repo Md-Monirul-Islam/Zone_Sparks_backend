@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,generics
 from django.http import JsonResponse
-from .models import Category
-from .serializers import CategorySerializer
+from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer
 
 # Create your views here.
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -28,3 +28,9 @@ class CategoryDeleteView(generics.DestroyAPIView):
 def category_count(request):
     count = Category.objects.count()
     return JsonResponse({'count': count})
+
+
+
+class ProductListCreateView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
