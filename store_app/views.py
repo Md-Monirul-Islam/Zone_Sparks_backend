@@ -44,3 +44,8 @@ class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+def product_count(request):
+    product = Product.objects.count()
+    return JsonResponse({'product': product})
