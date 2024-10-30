@@ -1,6 +1,4 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status,generics
+from rest_framework import generics
 from django.http import JsonResponse
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
@@ -32,5 +30,17 @@ def category_count(request):
 
 
 class ProductListCreateView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+
+# Retrieve and Update a specific product
+class ProductRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+# Delete a specific product
+class ProductDeleteView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
