@@ -22,6 +22,7 @@ class UserProfileView(APIView):
             "profile_image": profile.profile_image.url if profile.profile_image else None,
         }
         return JsonResponse(data)
+    
 
 class UpdateUserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
@@ -29,5 +30,5 @@ class UpdateUserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # Return the user's profile
+        # Ensure only the authenticated user’s profile can be updated
         return self.request.user.userprofile
