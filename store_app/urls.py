@@ -20,4 +20,8 @@ urlpatterns = [
 
     path('product-count/', views.product_count, name='product_count'),
 
+    path('add-stock/', views.add_stock, name='add-stock'),
+
+    path('search-products/', views.search_products, name='search-products'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

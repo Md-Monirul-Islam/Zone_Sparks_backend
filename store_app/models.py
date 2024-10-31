@@ -19,14 +19,33 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def total_sales(self):
+        return sum(sale.quantity_sold for sale in self.sales.all())
+
+    def stock_status(self):
+        stock = self.stocks.first()
+        if stock:
+            return 'In Stock' if stock.quantity > 0 else 'Out of Stock'
+        return 'Out of Stock'  # If no stock entry exists
 
 
 class Stock(models.Model):
     product = models.ForeignKey(Product, related_name='stocks', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    quantity = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return f'{self.quantity} of {self.product.name}'
+    
+
+
+class Sale(models.Model):
+    product = models.ForeignKey(Product, related_name='sales', on_delete=models.CASCADE)
+    quantity_sold = models.PositiveIntegerField()
+    sale_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Sale of {self.quantity_sold} {self.product.name} on {self.sale_date}'
 
 
 class Order(models.Model):

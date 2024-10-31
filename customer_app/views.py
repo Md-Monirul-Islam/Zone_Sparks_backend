@@ -36,7 +36,6 @@ class UpdateUserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # Ensure only the authenticated user’s profile can be updated
         return self.request.user.userprofile
     
     

@@ -1,8 +1,11 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
-from .models import Category, Product
-from .serializers import CategorySerializer, ProductSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
+from rest_framework.response import Response
+from .models import Category, Product, Stock
+from .serializers import CategorySerializer, ProductSerializer, StockSerializer
 
 # Create your views here.
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
@@ -56,3 +59,43 @@ class ProductDeleteView(generics.DestroyAPIView):
 def product_count(request):
     product = Product.objects.count()
     return JsonResponse({'product': product})
+
+
+
+@api_view(['POST'])
+# @permission_classes(IsAuthenticated)
+def add_stock(request):
+    if request.method == 'POST':
+        product_id = request.data.get('product_id')
+        quantity = request.data.get('quantity')
+
+        print(f'Product ID: {product_id}, Quantity: {quantity}')  # Debugging line
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Create or update stock
+        stock, created = Stock.objects.get_or_create(product=product)
+
+        # Check if quantity is valid
+        if quantity is None or quantity < 0:
+            return Response({'error': 'Quantity must be a non-negative number.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        stock.quantity += quantity
+        stock.save()
+
+        # Serialize the updated stock for response
+        serializer = StockSerializer(stock)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    return Response({'error': 'Invalid request method.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def search_products(request):
+    query = request.GET.get('query', '')
+    products = Product.objects.filter(name__icontains=query)
+    product_data = [{'id': product.id, 'name': product.name} for product in products]
+    return Response(product_data, status=status.HTTP_200_OK)
