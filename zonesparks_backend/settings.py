@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'account_app',
     'store_app',
+    'customer_app',
+    'home_page_app',
 ]
 
 MIDDLEWARE = [
