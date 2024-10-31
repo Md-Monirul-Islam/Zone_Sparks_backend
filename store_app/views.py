@@ -99,3 +99,39 @@ def search_products(request):
     products = Product.objects.filter(name__icontains=query)
     product_data = [{'id': product.id, 'name': product.name} for product in products]
     return Response(product_data, status=status.HTTP_200_OK)
+
+
+def process_sale(product_id, quantity_sold):
+    try:
+        product = Product.objects.get(id=product_id)
+        stock = product.stocks.first()
+
+        if stock is None or stock.quantity < quantity_sold:
+            raise ValueError("Insufficient stock to complete the sale.")
+
+        # Update stock quantity
+        stock.quantity -= quantity_sold
+        stock.save()
+
+        # Update total sales
+        product.total_sales += quantity_sold
+        product.save()
+
+        return True  # Sale processed successfully
+    except Product.DoesNotExist:
+        raise ValueError("Product not found.")
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def sell_product(request):
+    product_id = request.data.get('product_id')
+    quantity = request.data.get('quantity')
+
+    try:
+        process_sale(product_id, quantity)
+        return Response({'message': 'Sale processed successfully.'}, status=status.HTTP_200_OK)
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    

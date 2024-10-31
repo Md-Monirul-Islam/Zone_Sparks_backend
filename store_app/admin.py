@@ -7,7 +7,15 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category,CategoryAdmin)
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['id','name','price','category','total_sales','stock_status']
+    list_display = ['id', 'name', 'price', 'category', 'get_total_sales', 'get_stock_status']
+
+    def get_total_sales(self, obj):
+        return obj.get_total_sales()
+    get_total_sales.short_description = 'Total Sales'
+
+    def get_stock_status(self, obj):
+        return obj.stock_status()
+    get_stock_status.short_description = 'Stock Status'
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Stock)
 admin.site.register(Order)

@@ -16,23 +16,23 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     product_image = models.ImageField(upload_to='product_images/',null=True,blank=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    total_sales = models.PositiveIntegerField(default=0)  # Track total sales
 
     def __str__(self):
         return self.name
-    
-    def total_sales(self):
-        return sum(sale.quantity_sold for sale in self.sales.all())
+
+    def get_total_sales(self):
+        # Calculate total sales from the OrderItems model
+        return sum(item.quantity for item in OrderItems.objects.filter(product=self))
 
     def stock_status(self):
-        stock = self.stocks.first()
-        if stock:
-            return 'In Stock' if stock.quantity > 0 else 'Out of Stock'
-        return 'Out of Stock'  # If no stock entry exists
-
+        # Check stock quantity
+        stock = self.stocks.first()  # Assuming each product has one stock entry
+        return stock.quantity if stock else 0
 
 class Stock(models.Model):
     product = models.ForeignKey(Product, related_name='stocks', on_delete=models.CASCADE)
-    quantity = models.IntegerField(null=False, default=0)
+    quantity = models.PositiveIntegerField(null=True,default=0)
 
     def __str__(self):
         return f'{self.quantity} of {self.product.name}'
