@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'account_app',
     'store_app',
     'customer_app',
     'home_page_app',
+    'account_app.apps.AccountAppConfig',
 ]
 
 MIDDLEWARE = [
