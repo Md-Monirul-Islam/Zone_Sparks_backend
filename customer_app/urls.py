@@ -6,4 +6,5 @@ from .import views
 urlpatterns = [
     path('user-profile/<int:user_id>/', views.UserProfileView.as_view(), name='user-profile'),
     path('update-user-profile/', views.UpdateUserProfileView.as_view(), name='update-user-profile'),
+    path('submit/order/', views.submit_order, name='submit_order'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
