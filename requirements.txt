@@ -5,7 +5,6 @@ django-restframework==0.0.1
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 fontawesomefree==6.6.0
-gunicorn==23.0.0
 packaging==24.1
 pillow==11.0.0
 psycopg2==2.9.10
@@ -14,4 +13,3 @@ rest-framework-simplejwt==0.0.2
 six==1.16.0
 sqlparse==0.5.1
 tzdata==2024.2
-whitenoise==6.8.2
