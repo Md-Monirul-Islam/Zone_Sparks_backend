@@ -11,7 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
     class Meta:
         model = Product
-        fields = ['id','name','description','price','category','product_image','category_name']
+        fields = ['id','name','description','price','category','product_image','category_name','stock_status']
 
 
 class StockSerializer(serializers.ModelSerializer):
