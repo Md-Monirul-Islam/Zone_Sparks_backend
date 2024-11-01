@@ -39,7 +39,7 @@ def signup(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])  # Allow any user to access this endpoint
+@permission_classes([AllowAny])
 def login(request):
     data = request.data
     email = data.get('email')
@@ -48,15 +48,17 @@ def login(request):
     user = authenticate(username=email, password=password)
     
     if user is not None:
-        # Generate JWT token
         access_token = AccessToken.for_user(user)
         
-        return Response({
+        response_data = {
             'message': 'Login successful',
             'user_id': user.id,
             'email': user.email,
-            'token': str(access_token),  # Include the token in the response
-        }, status=status.HTTP_200_OK)
+            'token': str(access_token),
+            'is_superuser': user.is_superuser  # Include superuser status
+        }
+        
+        return Response(response_data, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
 
