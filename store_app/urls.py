@@ -24,4 +24,8 @@ urlpatterns = [
 
     path('search-products/', views.search_products, name='search-products'),
 
+    path('stocks/', views.StockListView.as_view(), name='stock-list'),
+
+    path('update-delete-stocks/<int:pk>/', views.StockListUpadeDeleteView.as_view(), name='update-delete-stocks'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

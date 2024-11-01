@@ -134,4 +134,16 @@ def sell_product(request):
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
+
+
+class StockListView(generics.ListAPIView):
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer
+
+
+class StockListUpadeDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer
+    
     

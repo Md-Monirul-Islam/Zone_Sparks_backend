@@ -15,9 +15,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
     class Meta:
         model = Stock
-        fields = ['id','product','quantity']
+        fields = ['id','product','quantity','product_price','product_name']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
