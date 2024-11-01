@@ -17,9 +17,19 @@ class ProductSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
     product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
+    stock_status = serializers.SerializerMethodField()  # Use SerializerMethodField to get stock status
+    total_sales = serializers.SerializerMethodField()
     class Meta:
         model = Stock
-        fields = ['id','product','quantity','product_price','product_name']
+        fields = ['id','product','quantity','product_price','product_name','stock_status','total_sales']
+
+    def get_stock_status(self, obj):
+        # Access the stock status from the related Product model
+        return obj.product.stock_status()
+    
+    def get_total_sales(self, obj):
+        # Calculate total sales from the OrderItems model associated with the product
+        return obj.product.get_total_sales()
 
 
 class OrderItemSerializer(serializers.ModelSerializer):

@@ -55,7 +55,7 @@ def login(request):
             'user_id': user.id,
             'email': user.email,
             'token': str(access_token),
-            'is_superuser': user.is_superuser  # Include superuser status
+            'is_superuser': user.is_superuser
         }
         
         return Response(response_data, status=status.HTTP_200_OK)
