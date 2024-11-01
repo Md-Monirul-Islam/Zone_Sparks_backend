@@ -2,7 +2,7 @@
 
 To set up and run this project locally, follow these steps:
 
-1. **create virtual environment and activate the virual environment**
+1. **create virtual environment and activate the virtual environment**
 
 2. **Navigate to the Project Directory**
 
@@ -14,7 +14,7 @@ To set up and run this project locally, follow these steps:
     ```bash
     pip install -r requirements.txt
 
-4. **run migration amd migrate command**
+4. **run migration and migrate command**
 
     ```bash
     python manage.py makemigrations
@@ -22,12 +22,12 @@ To set up and run this project locally, follow these steps:
     python manage.py migrate
 
 
-5. **Create a superuser to run this command**
+5. **run this command to create a superuser**
 
     ```bash
     python manage.py createsuperuser
 
-6. **Run this command to run development server**
+6. **run this command to start development server**
 
     ```bash
     python manage.py runserver
