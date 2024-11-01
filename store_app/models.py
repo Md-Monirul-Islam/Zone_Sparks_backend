@@ -26,9 +26,14 @@ class Product(models.Model):
         return sum(item.quantity for item in OrderItems.objects.filter(product=self))
 
     def stock_status(self):
-        # Check stock quantity
+        # Get current stock quantity
         stock = self.stocks.first()  # Assuming each product has one stock entry
-        return stock.quantity if stock else 0
+        if stock and stock.quantity > 0:
+            # Show "In Stock" if there's still stock available
+            return "In Stock" if stock.quantity > self.get_total_sales() else "Out of Stock"
+        return "Out of Stock"  # No stock or all units sold
+
+    stock_status.short_description = 'Stock Status'
 
 class Stock(models.Model):
     product = models.ForeignKey(Product, related_name='stocks', on_delete=models.CASCADE)
